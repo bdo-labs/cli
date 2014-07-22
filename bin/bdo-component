@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+cmd=$(basename $0)
+url=https://api.github.com/orgs/bdo-labs/repos
+key=$BDO_KEY
+
+#
+# Output usage
+#
+
+usage() {
+  cat << EOT
+
+  Usage: $cmd <basename>
+
+  Options:
+
+    -h, --help          output usage information
+
+EOT
+}
+
+#
+# JSON post request
+#
+
+POST() {
+  curl -X POST \
+       -H "Authorization: token $key" \
+       -H "Content-type: application/json" \
+       $*
+}
+
+#
+# Create remote and local repository
+#
+
+createrepository() {
+  local name=$1
+
+  # Create repo on github
+  POST --data @$name/package.json $url 2> /dev/null
+
+  # Initialize local repository and set up remote origin
+  cd $name
+  git init
+  git remote add origin https://github.com/bdo-labs/$name
+}
+
+#
+# Create component using khaos template
+#
+
+createfromtemplate() {
+  local name=$1
+  khaos bdo-labs/component $name
+}
+
+#
+# Parse arguments
+#
+
+while test $# -ne 0; do
+  arg=$1; shift
+  case $arg in
+    __shortusage)
+      echo "$cmd <basename>"
+      exit 0
+      ;;
+    __description)
+      echo "create a new angular-component"
+      exit 0
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      createfromtemplate $arg && createrepository $arg
+      exit $?
+      ;;
+  esac
+done
+usage && exit 1
+

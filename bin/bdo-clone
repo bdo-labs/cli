@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+cmd=$(basename $0)
+
+#
+# Output usage
+#
+
+usage() {
+  cat << EOT
+
+  Usage: $cmd <repository> [options]
+
+  Options:
+
+    All of the git-clone options are persisted onto this interface.
+    See 'git help clone'
+
+    -h, --help          output usage information
+
+EOT
+}
+
+#
+# Parse arguments
+#
+
+while test $# -ne 0; do
+  arg=$1; shift
+  case $arg in
+    __shortusage)
+      echo "$cmd <repository> [options]"
+      exit 0
+      ;;
+    __description)
+      echo "clone repository from bdo´s github account"
+      exit 0
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      command git clone https://github.com/bdo-labs/$arg $*
+      exit $?
+      ;;
+  esac
+done
+usage && exit 1
+
