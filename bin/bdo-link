@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+cmd=$(basename $0)
+
+#
+# Output usage
+#
+
+usage() {
+  cat << EOT
+
+  Usage: $cmd [dependency], [dependency]
+
+  If no dependencies are specified, it will use all discoverable
+  dependencies. The lookup is made one directory up from the \`cwd\`.
+
+  Options:
+
+    -h, --help          output usage information
+
+EOT
+}
+
+#
+# Symlink local dependencies
+# Note: This force-removes the remote version
+#
+
+symlink() {
+  if [[ ! -d node_modules ]]; then
+    echo "\`$cmd\` was not executed from the root of a built repository"
+    exit 1
+  fi
+  local deps="$*"
+  if [[ -z $deps ]]; then
+    for dir in $(ls -1 node_modules); do
+      [[ -d ../$dir ]] && deps="$deps $dir"
+    done
+  fi
+  for dep in $deps; do
+    rm -r "node_modules/$dep"
+    ln -sfF "../../$dep" node_modules
+  done
+}
+
+#
+# Parse arguments
+#
+
+while test $# -ne 0; do
+  arg=$1; shift
+  case $arg in
+    __shortusage)
+      echo "$cmd [dependency], [dependency]"
+      exit 0
+      ;;
+    __description)
+      echo "symlink dependencies that exists locally"
+      exit 0
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+  esac
+done
+
+symlink $*
+exit $?
+
