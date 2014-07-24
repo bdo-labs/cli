@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+cmd=$(basename $0)
+
+#
+# Output usage
+#
+
+usage() {
+  cat << EOT
+
+  Usage: $cmd
+
+  Options:
+
+    -h, --help          output usage information
+
+EOT
+}
+
+#
+# Run make for all local dependencies
+# TODO Keep `cwd` and cd back and forth
+#    | Doing so instead of subshell will allow environment
+#    | to be passed along.
+#
+
+makelocals() {
+  local targets=$*
+  local deps=$(ls -1F node_modules | grep '@$')
+  deps=${deps%?}
+  for dep in $deps; do
+    $(cd ../$dep && make $targets)
+  done
+  make $targets
+}
+
+#
+# Parse arguments
+#
+
+while test $# -ne 0; do
+  arg=$1; shift
+  case $arg in
+    __shortusage)
+      echo "$cmd"
+      exit 0
+      ;;
+    __description)
+      echo "run make for all local dependencies"
+      exit 0
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+  esac
+done
+
+makelocals $*
+exit $?
+

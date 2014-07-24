@@ -18,7 +18,7 @@ SRC:=$(PWD)/bin/bdo*
 #
 
 link: $(SRC)
-	ln -s $^ $(PREFIX)/bin/
+	ln -si $^ $(PREFIX)/bin/
 
 install: $(SRC)
 	cp $^ $(PREFIX)/bin
