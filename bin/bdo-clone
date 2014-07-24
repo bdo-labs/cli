@@ -41,7 +41,7 @@ while test $# -ne 0; do
       exit 0
       ;;
     *)
-      command git clone https://github.com/bdo-labs/$arg $*
+      command git clone git@github.com:bdo-labs/$arg $*
       exit $?
       ;;
   esac
