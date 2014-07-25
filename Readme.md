@@ -5,6 +5,22 @@ CLI
 A command-line interface for doing various repetitive tasks.
 
 
+    Usage: bdo command [options]
+
+    Commands:
+
+        help <command>                  output usage for a specific command
+        clone <repository> [options]    clone repository from bdo´s github account
+        component <basename>            create a new angular-component
+        link [dependency], [dependency] symlink dependencies that exists locally
+        make                            run make for all local dependencies
+
+    Options:
+
+        -h, --help        output usage information
+        -V, --version     output version number
+
+
 Installation
 ------------
 

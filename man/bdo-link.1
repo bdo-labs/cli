@@ -1,0 +1,39 @@
+.\" Generated with Ronnjs 0.3.8
+.\" http://github.com/kapouer/ronnjs/
+.
+.TH "LINK" "1" "August 2014" "" ""
+.
+.SH "NAME"
+\fBlink\fR \-\- Create symlinks for local dependencies
+.
+.SH "SYNOPSIS"
+.
+.nf
+bdo link [dependency], [dependency]
+.
+.fi
+.
+.SH "DESCRIPTION"
+.
+.nf
+If no dependencies are specified, it will use all discoverable
+dependencies\. The lookup is made one directory up from \\`cwd\\`\.
+.
+.fi
+.
+.SH "NOTE"
+.
+.nf
+The `node_modules` directory must be correctly populated with remote
+dependencies\.
+.
+.fi
+.
+.SH "EXAMPLE"
+.
+.nf
+    $ cd bdo\-labs/backstage
+    $ npm install
+    $ bdo link
+.
+.fi
