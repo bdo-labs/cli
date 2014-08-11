@@ -24,16 +24,16 @@ EOT
 #
 
 makelocals() {
-  local cwd=$CWD
+  local dir=$PWD
   local targets=$*
   local deps=$(ls -1F node_modules | grep '@$')
-  deps=${deps%?}
+  deps=${deps//@/}
   for dep in $deps; do
-    cd ../$dep && make $targets
-    cd $cwd
+    cd "../$dep" && make $targets && cd $dir
   done
   make $targets
 }
+
 
 #
 # Parse arguments
