@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 cmd=$(basename $0)
+shortusage="$cmd [dependencies]"
 
 #
 # Output usage
@@ -9,10 +10,7 @@ cmd=$(basename $0)
 usage() {
   cat << EOT
 
-  Usage: $cmd [dependency], [dependency]
-
-  If no dependencies are specified, it will use all discoverable
-  dependencies. The lookup is made one directory up from the \`cwd\`.
+  Usage: $shortusage
 
   Options:
 
@@ -40,6 +38,7 @@ symlink() {
   for dep in $deps; do
     rm -r "node_modules/$dep"
     ln -sfF "../../$dep" node_modules
+    echo "Symlink was created for $dep"
   done
 }
 
@@ -51,7 +50,7 @@ while test $# -ne 0; do
   arg=$1; shift
   case $arg in
     __shortusage)
-      echo "$cmd [dependency], [dependency]"
+      echo "$shortusage"
       exit 0
       ;;
     __description)

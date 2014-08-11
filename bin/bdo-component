@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 cmd=$(basename $0)
+shortusage="$cmd <basename>"
 url=https://api.github.com/orgs/bdo-labs/repos
 key=$BDO_KEY
 
@@ -11,7 +12,7 @@ key=$BDO_KEY
 usage() {
   cat << EOT
 
-  Usage: $cmd <basename>
+  Usage: $shortusage
 
   Options:
 
@@ -64,7 +65,7 @@ while test $# -ne 0; do
   arg=$1; shift
   case $arg in
     __shortusage)
-      echo "$cmd <basename>"
+      echo "$shortusage"
       exit 0
       ;;
     __description)

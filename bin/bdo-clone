@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 cmd=$(basename $0)
+shortusage="$cmd <repository>"
+url=git@github.com:bdo-labs
 
 #
 # Output usage
@@ -9,7 +11,7 @@ cmd=$(basename $0)
 usage() {
   cat << EOT
 
-  Usage: $cmd <repository> [options]
+  Usage: $shortusage
 
   Options:
 
@@ -22,6 +24,17 @@ EOT
 }
 
 #
+# Clone repository
+#
+
+clone() {
+  local repo=$1; shift
+  local opts=$*
+  command git clone $url/$repo $opts
+  cd $repo
+}
+
+#
 # Parse arguments
 #
 
@@ -29,7 +42,7 @@ while test $# -ne 0; do
   arg=$1; shift
   case $arg in
     __shortusage)
-      echo "$cmd <repository> [options]"
+      echo "$shortusage"
       exit 0
       ;;
     __description)
@@ -41,7 +54,7 @@ while test $# -ne 0; do
       exit 0
       ;;
     *)
-      command git clone git@github.com:bdo-labs/$arg $*
+      clone $arg $*
       exit $?
       ;;
   esac
