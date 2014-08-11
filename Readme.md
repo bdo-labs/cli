@@ -31,7 +31,7 @@ Installation
 Note
 ----
 
-To use `bdo-component` you'll have to set the environment variable BDO_KEY
+- To use `bdo-component` you'll have to set the environment variable BDO_KEY
 to an actual api-key.
 
 

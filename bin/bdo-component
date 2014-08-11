@@ -58,6 +58,20 @@ createfromtemplate() {
 }
 
 #
+# Validate that an API-key is present and create
+#
+
+createcomponent() {
+  [[ -z $key ]] \
+    && echo "You have to set BDO_KEY" \
+    && exit 1
+
+  local name=$1
+
+  createfromtemplate $name && createrepository $name
+}
+
+#
 # Parse arguments
 #
 
@@ -77,7 +91,7 @@ while test $# -ne 0; do
       exit 0
       ;;
     *)
-      createfromtemplate $arg && createrepository $arg
+      createcomponent $arg
       exit $?
       ;;
   esac
